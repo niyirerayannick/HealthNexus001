@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+{% block title %}Home - Health Nexus{% endblock %}
+
+{% block content %}
+{% load static %}
+    <div class="container">
+            <h2>Available Course</h2>
+            <div class="quiz-cards">
+    
+                {% for course in courses%}
+                <div class="card">
+                    {% if course.course_banner %}
+                    <img src="{{ course.course_banner.url }}" alt="{{ course.name }}">
+                    {% endif %}
+                    <center><div class="card-content">
+                        <h3>{{ course.name }}</h3>
+                        <p>{{ course.description }}</p>
+                        <a href="{% url 'view_course' course.pk %}">View Course</a>
+                    </div></center>
+                </div>
+                {% endfor %}
+            </div>
+    </div>
+{% endblock %}

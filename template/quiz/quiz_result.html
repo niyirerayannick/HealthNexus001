@@ -1,0 +1,36 @@
+
+{% extends 'base.html' %}
+{% block title %}Home - Health Nexus{% endblock %}
+{% block content %}
+{% load static %}
+
+<div class="container">
+    <div class="result-container">
+        <h2>{{ quiz.title }} Quiz Result</h2>
+     {% if percentage_score >= 80 %}
+            <p>Congratulations! You have completed the quiz.</p>
+            <p>Your score is:</p>
+            <div class="score">{{ score }} / {{ total }}</div>
+            <p>Your percentage is:</p>
+            <div class="score">{{ percentage_score }}%</div>
+            <p>Great job! You passed the quiz.</p>
+            <button class="button">
+                <a href="{% url 'quiz_list'  %}" style="color: inherit; text-decoration: none;">Back to quiz list</a>
+            </button>
+        {% else %}
+            <p>Oops! You have completed the quiz.</p>
+            <p>Your score is:</p>
+            <div class="score">{{ score }} / {{ total }}</div>
+            <p>Your percentage is:</p>
+            <div class="score">{{ percentage_score }}%</div>
+            <p>Looks like you didn't pass the quiz. We recommend taking a related course to improve your knowledge. The course might take 5 to 20 minutes to complete.</p>
+           <div class="b">
+            <button class="button">
+                <a href="{% url 'view_course' pk=quiz.related_course.pk %}" style="color: inherit; text-decoration: none;">Take Related Course</a>
+            </button>
+           </div>
+        {% endif %}
+    </div>
+</div>
+
+{% endblock %}

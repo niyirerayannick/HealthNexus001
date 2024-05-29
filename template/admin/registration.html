@@ -1,0 +1,73 @@
+{% extends 'auth-base.html' %}
+{% block title %}Home - Health Nexus{% endblock %}
+
+{% block content %}
+{% load static %}
+<div class="signup-form">
+    <div class="logo">
+        <h1>Health<span>Nexus</span></h1>
+    </div>
+    <h2>Sign up</h2>
+    <p>Let's get you all set up so you can access your personal account.</p>
+    {% if messages %}
+        <ul style="margin-top: 20px;">
+            {% for message in messages %}
+               <center> <p style="padding: 10px; border-radius: 4px; margin-bottom: 10px; {% if message.tags == 'error' %} background-color: #f8d7da; color: #721c24; border: 1px solid #f5c6cb;{% endif %}">{{ message }}</p></center>
+            {% endfor %}
+        </ul>
+        {% endif %}
+    <form action="{% url 'register' %}" method="post">
+        {% csrf_token %}
+        <div class="input-group">
+            <div class="form-row">
+                <div class="input-item">
+                    <label for="first-name">First Name</label>
+                    <input type="text" id="first_name" name="first_name" placeholder="First Name">
+                </div><br>
+                <div class="input-item">
+                    <label for="last-name">Last Name</label>
+                    <input type="text" id="last_name" name="last_name" placeholder="Last Name">
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="input-item">
+                    <label for="phone-number">Phone Number</label>
+                    <input type="tel" id="telephone" name="telephone" placeholder="Telephone">
+                </div><br>
+                <div class="input-item">
+                    <label for="email">Email</label>
+                    <input type="email" id="email" name="email" placeholder="Email">
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="input-item">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" name="password" placeholder="********">
+                </div><br>
+                <div class="input-item">
+                    <label for="confirm_password">Confirm Password</label>
+                    <input type="password" id="confirm_password" name="confirm_password" placeholder="********">
+                </div>
+            </div>
+        </div>
+        
+        <div class="terms-privacy">
+            <label>
+                <input type="checkbox" name="terms">
+                I agree to all the <a href="#">Terms</a> and <a href="#">Privacy Policies</a>
+            </label>
+        </div>
+        <button type="submit" class="signup-btn">Create account</button>
+        <p class="login-link">Already have an account? <a href="{% url 'login' %}">Login</a></p>
+    </form>
+    <div class="social-login">
+        <p>Or Register with</p>
+        <a href="{% url 'social:begin' 'google-oauth2' %}" class="google-sign-in-button">
+            Sign Up with Google
+        </a>
+    </div>
+</div>&nbsp;&nbsp;&nbsp;
+<div class="illustration">
+    <img src="{% static 'images/home.png' %}" alt="Illustration">
+</div>
+{% endblock %}

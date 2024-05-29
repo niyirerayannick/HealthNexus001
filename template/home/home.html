@@ -1,0 +1,72 @@
+
+{% extends 'base.html' %}
+{% block title %}Home - Health Nexus{% endblock %}
+
+{% block content %}
+{% load static %}
+<div class="container">
+    <div class="main-content">
+        <div class="text-content">
+            <h2>Learn <br> new concepts <br> for each question</h2>
+            <p>The landscape of reproductive health education for teenagers and young adults faces significant challenges, marked by gaps in knowledge, access, and engagement</p>
+            <a href="#" class="start-challenge">Start Challenge</a>
+            <a href="#" class="know-more">know more</a>
+        </div>
+        <div class="image-content">
+            <img src="{% static 'images/home.png' %}" alt="Illustration of people with question marks">
+        </div>
+    </div>
+      <center> <h2>Available Courses</h2></center>
+   <div class="quiz-cards">
+    
+    {% for course in courses|slice:":3" %}
+    <div class="card">
+        {% if course.course_banner %}
+        <img src="{{ course.course_banner.url }}" alt="{{ course.name }}">
+        {% endif %}
+        <center>
+        <div class="card-content">
+            <h3>{{ course.name }}</h3>
+            <p>{{ course.description }}</p>
+             <a href="{% url 'view_course' course.pk %}">View Course</a>
+         </div></center>
+         </div>
+                
+        {% endfor %}
+    </div>
+    <br>
+     {% if courses|length > 3 %}
+   <div class="view-more">
+    <a href="{% url 'course_list' %}" class="view-more">View More Courses</a>
+    </div>
+    {% endif %}
+
+<br>
+<br>
+<br>
+<!-- Quiz Cards Section -->
+<center> <h2>Available Quizzes</h2></center>
+<div class="quiz-cards">
+    
+    {% for quiz in quizzes|slice:":3" %}
+    <div class="card">
+        {% if quiz.image %}
+        <img src="{{ quiz.image.url }}" alt="{{ quiz.title }}">
+        {% endif %}
+        <div class="card-content">
+            <h3>{{ quiz.title }}</h3>
+            <p>{{ quiz.description }}</p>
+            <a href="{% url 'quiz_detail' quiz.pk %}">Start Quiz</a>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+<br>
+{% if quizzes|length > 3 %}
+<div class="view-more">
+    <a href="{% url 'quiz_list' %}" class="view-more">View More Quizzes</a>
+</div>
+{% endif %}
+</div>
+</div
+{% endblock %}

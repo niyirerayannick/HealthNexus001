@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{{ course.name }}</title>
+</head>
+<body>
+    <h1>{{ course.name }}</h1>
+    <p><strong>Description:</strong> {{ course.description }}</p>
+    <p><strong>Level:</strong> {{ course.get_level_display }}</p>
+    <p><strong>Category:</strong> {{ course.category }}</p>
+    
+    <!-- Display content -->
+    <h2>Content</h2>
+    <p><strong>Image:</strong> <img src="{{ course.content_image.url }}" alt="{{ course.name }}"></p>
+    <p><strong>PDF:</strong> <a href="{{ course.content_pdf.url }}" target="_blank">View PDF</a></p>
+    {% if course.content_video %}
+    <p><strong>Video:</strong> <a href="{{ course.content_video.url }}" target="_blank">View Video</a></p>
+    {% endif %}
+    {% if course.video_url %}
+    <p><strong>Video URL:</strong> <a href="{{ course.video_url }}" target="_blank">View Video</a></p>
+    {% endif %}
+    
+    <p><strong>Teacher:</strong> {{ course.teacher }}</p>
+    <!-- Display related quiz -->
+    <h2>Related Quiz</h2>
+    <ul>
+        {% for quiz in course.related_quiz.all %}
+            <li><a href="{% url 'quiz_detail' pk=quiz.pk %}">{{ quiz.title }}</a></li>
+        {% endfor %}
+    </ul>
+</body>
+</html>

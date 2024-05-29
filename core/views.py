@@ -1,0 +1,217 @@
+# core/views.py
+from django.contrib.auth import authenticate, login
+from django.contrib.sites.shortcuts import get_current_site
+from django.http import HttpResponse, HttpResponseNotAllowed
+from django.shortcuts import get_object_or_404, render, redirect
+from django.template.loader import render_to_string
+from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
+from django.utils.encoding import force_bytes, force_str
+from django.contrib.auth.tokens import default_token_generator
+from django.core.mail import send_mail
+from HealthNexus import settings
+from core.forms import FeedbackForm, QuizForm
+from .models import Answer, Course, CourseTaken, Quiz, QuizResult, User
+from .tokens import account_activation_token
+from django.contrib.auth.forms import PasswordResetForm 
+from django.utils.encoding import force_str
+from django.contrib.auth.hashers import make_password
+from django.contrib.auth.views import LogoutView
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth import logout
+from django.contrib.auth import get_user_model
+from django.contrib import messages
+from django.urls import reverse
+
+User = get_user_model()
+
+def home(request):
+    quizzes = Quiz.objects.all()
+    courses = Course.objects.all()
+    context ={'quizzes': quizzes,'courses': courses}
+    return render(request, 'home/home.html', context)
+
+def quiz_list(request):
+    quizzes = Quiz.objects.all()
+    return render(request, 'quiz/quiz_list.html', {'quizzes': quizzes})
+
+@login_required
+def quiz_detail(request, pk):
+    quiz = get_object_or_404(Quiz, pk=pk)
+    form = QuizForm(request.POST or None, quiz=quiz)
+    
+    if request.method == 'POST':
+        if form.is_valid():
+            score = 0
+            total = quiz.questions.count()
+            for question in quiz.questions.all():
+                answer_id = form.cleaned_data.get(f'question_{question.id}')
+                if answer_id:
+                    answer = Answer.objects.get(id=answer_id)
+                    if answer.is_correct:
+                        score += 1
+            
+            # Calculate percentage score
+            percentage_score = (score / total) * 100
+            
+            # Render quiz result
+            return render(request, 'quiz/quiz_result.html', {'quiz': quiz, 'score': score, 'total': total, 'percentage_score': percentage_score})
+    
+    return render(request, 'quiz/quiz_detail.html', {'quiz': quiz, 'form': form})
+
+def course_list(request):
+    courses = Course.objects.all()
+    context = {'courses': courses}
+    return render(request, 'course/course_list.html', context)
+
+def view_course(request, pk):
+    course = get_object_or_404(Course, pk=pk)
+    return render(request, 'course/view_course.html', {'course': course})
+
+
+def register(request):
+    if request.method == 'POST':
+        first_name = request.POST['first_name']
+        last_name = request.POST['last_name']
+        email = request.POST['email']
+        telephone = request.POST['telephone']
+        password = request.POST['password']
+        
+        # Check if email is already registered
+        if User.objects.filter(email=email).exists():
+            messages.error(request, 'This email is already registered.')
+            return redirect(reverse('register'))  # Redirect to registration page
+        
+        # Check if telephone is already registered
+        if User.objects.filter(telephone=telephone).exists():
+            messages.error(request, 'This telephone number is already registered.')
+            return redirect(reverse('register'))  # Redirect to registration page
+
+        # Create inactive user
+        user = User.objects.create_user(email=email, password=password, first_name=first_name, last_name=last_name, telephone=telephone, is_active=False)
+        
+        # Send verification email
+        current_site = get_current_site(request)
+        subject = 'Activate Your Account'
+        message = render_to_string('admin/account_activation_email.html', {
+            'user': user,
+            'domain': current_site.domain,
+            'uid': urlsafe_base64_encode(force_bytes(user.pk)),
+            'token': account_activation_token.make_token(user),
+        })
+        send_mail(subject, message, 'niyannick120@gmail.com', [user.email])
+        
+        return redirect('account_activation_sent')
+    else:
+        return render(request, 'admin/registration.html')
+    
+    
+def activate(request, uidb64, token):
+    try:
+        uid = force_str(urlsafe_base64_decode(uidb64))
+        user = User.objects.get(pk=uid)
+    except (TypeError, ValueError, OverflowError, User.DoesNotExist):
+        user = None
+
+    if user is not None and account_activation_token.check_token(user, token):
+        user.is_active = True
+        user.save()
+        login(request, user)
+        return redirect('home')
+    else:
+        return render(request, 'admin/account_activation_invalid.html')
+
+def account_activation_sent(request):
+    return render(request, 'admin/account_activation_sent.html')
+
+def user_login(request):
+    if request.method == 'POST':
+        email = request.POST['email']
+        password = request.POST['password']
+        user = authenticate(request, email=email, password=password)
+        
+        if user is not None:
+            login(request, user)
+            return redirect('home')  # Redirect to dashboard or any other page
+        else:
+            # Authentication failed
+            messages.error(request, 'Invalid email or password')
+            return render(request, 'admin/login.html')
+    else:
+        return render(request, 'admin/login.html')
+
+def forget_password(request):
+    if request.method == 'POST':
+        email = request.POST.get('email')
+        user = User.objects.filter(email=email).first()
+        if user:
+            # Generate token for password reset
+            token = default_token_generator.make_token(user)
+
+            # Build reset password link
+            uid = urlsafe_base64_encode(force_bytes(user.pk))
+            reset_url = f"{settings.BASE_URL}/reset-password/{uid}/{token}/"
+
+            # Send password reset email
+            subject = 'Reset Your Password'
+            message = render_to_string('admin/reset_password_email.html', {
+                'user': user,
+                'reset_url': reset_url,
+            })
+            send_mail(subject, message, settings.EMAIL_HOST_USER, [email])
+
+            return render(request, 'admin/password_reset_response.html', {'message': "Password reset link sent to your email."})
+        else:
+            return render(request, 'admin/password_reset_response.html', {'message': "No user found with this email."})
+    else:
+        return render(request, 'admin/forget_password.html')
+    
+    
+def reset_password(request, uidb64, token):
+    try:
+        uid = force_str(urlsafe_base64_decode(uidb64))
+        user = User.objects.get(pk=uid)
+    except (TypeError, ValueError, OverflowError, User.DoesNotExist):
+        user = None
+
+    if user is not None and default_token_generator.check_token(user, token):
+        if request.method == 'POST':
+            password = request.POST['password']
+            user.password = make_password(password)
+            user.save()
+            login(request, user)
+            return redirect('home')  # Redirect to home page after resetting password
+        else:
+            return render(request, 'admin/reset_password.html')
+    else:
+        return HttpResponse('Invalid password reset link.')   
+
+def logout_view(request):
+    if request.method == 'POST' or request.method == 'GET':
+        logout(request)
+        return redirect('home')  # Redirect to home page after logout
+    else:
+        return HttpResponseNotAllowed(['GET', 'POST'])
+    
+
+@login_required
+def dashboard(request):
+    user = request.user
+    quiz_results = QuizResult.objects.filter(user=user)
+    courses_taken = CourseTaken.objects.filter(user=user)
+
+    if request.method == 'POST':
+        form = FeedbackForm(request.POST)
+        if form.is_valid():
+            feedback = form.save(commit=False)
+            feedback.user = user
+            feedback.save()
+            return redirect('my_dashboard')
+    else:
+        form = FeedbackForm()
+
+    context = {
+        'quiz_results': quiz_results,
+        'courses_taken': courses_taken,
+        'form': form
+    }
+    return render(request, 'core/dashboard.html', context)

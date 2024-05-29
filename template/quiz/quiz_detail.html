@@ -1,0 +1,17 @@
+
+{% extends 'base.html' %}
+{% block title %}Home - Health Nexus{% endblock %}
+{% block content %}
+{% load static %}
+    <div class="quiz-container">
+        <center><h1>{{ quiz.title }}</h1>
+       <p><i><b>"{{ quiz.description }}"</b></i></p></center><br>
+        <form id="quiz-form" method="post"> <!-- Use URL template tag to specify the action -->
+            {% csrf_token %}
+            {{ form.as_p }}
+            <div class="question">
+            <center><button type="submit">Submit Quiz</button></center>
+        </form>
+    </div>
+    
+{% endblock %}

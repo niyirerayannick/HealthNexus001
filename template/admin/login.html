@@ -1,0 +1,53 @@
+{% extends 'auth-base.html' %}
+{% block title %}Home - Health Nexus{% endblock %}
+
+{% block content %}
+{% load static %}
+<div class="login-form">
+    <div class="logo">
+        <h1>Health<span>Nexus</span></h1>
+    </div>
+    <h2>Login</h2>
+    <p>Login to access your HealthNexus account</p>
+    {% if messages %}
+        <ul style="margin-top: 20px;">
+            {% for message in messages %}
+               <center> <p style="padding: 10px; border-radius: 4px; margin-bottom: 10px; {% if message.tags == 'error' %} background-color: #f8d7da; color: #721c24; border: 1px solid #f5c6cb;{% endif %}">{{ message }}</p></center>
+            {% endfor %}
+        </ul>
+        {% endif %}
+    <form action="{% url 'login' %}" method="post">
+        {% csrf_token %}
+        <div class="input-group">
+            <label for="email">Email</label>
+            <input type="email" id="email" name="email" placeholder="Email">
+        </div>
+        <div class="input-group">
+            <label for="password">Password</label>
+            <input type="password" id="password" name="password" placeholder="********">
+            <button type="button" class="toggle-password"></button>
+        </div>
+        <div class="remember-forgot">
+            <label>
+                <input type="checkbox" name="remember">
+                Remember me
+            </label>
+            <a href="{% url 'forget_password' %}">Forgot Password</a>
+        </div>
+        <button type="submit" class="login-btn">Login</button>
+
+        <p class="signup-link">Don’t have an account? <a href="{% url 'register' %}">Sign up</a></p>
+    </form>
+    <div class="social-login">
+        <p>Or login with</p>
+        <a href="{% url 'social:begin' 'google-oauth2' %}" class="google-sign-in-button">
+            Sign in with Google
+        </a>
+    </div>
+    
+</div>
+<div class="illustration">
+    <img src="{% static 'images/home.png' %}" alt="Illustration">
+</div>
+</div>
+    {% endblock %}
