@@ -191,5 +191,4 @@ JAZZMIN_SETTINGS = {
     "site_brand": "HealthNexus",
     "login_logo": None,
     "copyright": "HealthNexus",
-
     }
