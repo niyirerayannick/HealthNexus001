@@ -21,6 +21,7 @@ from django.contrib.auth import logout
 from django.contrib.auth import get_user_model
 from django.contrib import messages
 from django.urls import reverse
+from .models import User 
 
 User = get_user_model()
 
@@ -104,18 +105,19 @@ def register(request):
     else:
         return render(request, 'admin/registration.html')
     
-    
 def activate(request, uidb64, token):
     try:
         uid = force_str(urlsafe_base64_decode(uidb64))
-        user = User.objects.get(pk=uid)
+        user = get_object_or_404(User, pk=uid)
     except (TypeError, ValueError, OverflowError, User.DoesNotExist):
         user = None
 
     if user is not None and account_activation_token.check_token(user, token):
         user.is_active = True
         user.save()
-        login(request, user)
+        # Specify the backend explicitly
+        backend = 'django.contrib.auth.backends.ModelBackend'
+        login(request, user, backend=backend)
         return redirect('home')
     else:
         return render(request, 'admin/account_activation_invalid.html')
