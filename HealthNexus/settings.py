@@ -32,6 +32,7 @@ ALLOWED_HOSTS = ['localhost', '127.0.0.1','healthnexus.pythonanywhere.com']
 # Application definition
 
 INSTALLED_APPS = [
+    'jazzmin',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -40,6 +41,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'core',
     'social_django',
+    
 ]
 
 MIDDLEWARE = [
@@ -182,3 +184,12 @@ SOCIAL_AUTH_LOGIN_REDIRECT_URL = '/'
 
 # Optional: Customize the behavior after failed authentication
 SOCIAL_AUTH_LOGIN_ERROR_URL = '/login/error/'
+
+JAZZMIN_SETTINGS = {
+    "site_title": "HealthNexus ADMIN",
+    "site_header": "HealthNexus",
+    "site_brand": "HealthNexus",
+    "login_logo": None,
+    "copyright": "HealthNexus",
+
+    }

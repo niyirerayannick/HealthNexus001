@@ -12,11 +12,17 @@ body {
 
 header {
     background-color: #fff;
-    padding: 10px 0;
+    padding: 20px 0;
     border-bottom: 1px solid #ddd;
+}
+.cont-header{
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
     display: flex;
-    justify-content: space-between;
     align-items: center;
+    justify-content: space-between;
+
 }
 
 .logo h1 {
@@ -184,6 +190,84 @@ main {
     float: left;
     margin-top: 5px;
 }
+
+
+.table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+}
+
+.table, th, td {
+    border: 1px solid #ddd;
+}
+
+th, td {
+    padding: 8px;
+    text-align: left;
+}
+
+th {
+    background-color: #f4f4f4;
+}
+
+.feedback form {
+    margin-top: 20px;
+}
+
+.feedback textarea {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+/* Dropdown button */
+.dropbtn {
+    background-color: transparent;
+    color: #333;
+    padding: 10px 15px;
+    font-size: 16px;
+    border: none;
+    cursor: pointer;
+}
+
+/* Dropdown content (hidden by default) */
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #f9f9f9;
+    min-width: 160px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 1;
+}
+
+/* Links inside the dropdown */
+.dropdown-content a {
+    color: #333;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+}
+
+/* Change color of dropdown links on hover */
+.dropdown-content a:hover {
+    background-color: #f1f1f1;
+}
+
+/* Show the dropdown menu on hover */
+.dropdown:hover .dropdown-content {
+    display: block;
+}
+
+/* Profile image */
+.profile img {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    margin-right: 10px;
+}
+
+
 .view-more {
   display: block; /* Change display to block to center horizontally */
   width: fit-content; /* Adjust width to fit the content */
@@ -224,6 +308,116 @@ margin-right: 0;
 .menu-footer li a {
 color: #fff;
 text-decoration: none;
+}
+
+.result-container {
+    background-color: #f9f9f9;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+.result-container h2 {
+    font-size: 2em;
+    color: #333;
+}
+
+.result-container p {
+    font-size: 1.2em;
+    color: #666;
+}
+
+.result-container .score {
+    font-size: 3em;
+    color: #0016a4ef;
+    margin: 20px 0;
+}
+.button {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #0016a4ef;
+    color: #fff;
+    text-decoration: none;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.button:hover {
+    background-color: #1a30bdef;
+}
+
+.quiz-container {
+    max-width: 600px;
+     /*margin-top: 1px; This sets the top margin to 20px */
+    margin-right: auto; /* Centering horizontally */
+    margin-bottom: 40px; /* This sets the bottom margin to 40px */
+    margin-left: auto; /* Centering horizontally */
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.question {
+    margin-bottom: 20px;
+}
+
+.question h2 {
+    margin-bottom: 10px;
+}
+
+.question input[type="radio"] {
+    display: none;
+}
+
+.question label {
+    display: block;
+    margin-bottom: 10px;
+    cursor: pointer;
+}
+
+button[type="submit"] {
+    padding: 10px 20px;
+    background-color: #0016a4ef;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+button[type="submit"]:hover {
+    background-color: #0016a4ef;
+}
+
+
+@media screen and (max-width: 480px) {
+    .dropbtn {
+        font-size: 12px;
+        padding: 6px 10px;
+    }
+
+    .dropdown-content {
+        min-width: 100px;
+    }
+
+    .dropdown-content a {
+        padding: 8px 12px;
+    }
+
+    .profile img {
+        width: 25px;
+        height: 25px;
+    }
+}
+
+@media (max-width: 768px) {
+    .result-container h2 {
+        font-size: 1.5em;
+    }
 }
 
 

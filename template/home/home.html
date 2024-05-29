@@ -19,7 +19,7 @@
       <center> <h2>Available Courses</h2></center>
    <div class="quiz-cards">
     
-    {% for course in courses|slice:":3" %}
+    {% for course in courses|slice:":4" %}
     <div class="card">
         {% if course.course_banner %}
         <img src="{{ course.course_banner.url }}" alt="{{ course.name }}">
@@ -35,7 +35,7 @@
         {% endfor %}
     </div>
     <br>
-     {% if courses|length > 3 %}
+     {% if courses|length > 4 %}
    <div class="view-more">
     <a href="{% url 'course_list' %}" class="view-more">View More Courses</a>
     </div>
