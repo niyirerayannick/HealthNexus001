@@ -7,6 +7,56 @@
     <title>{% block title %}Health Nexus{% endblock %}</title>
     <!-- Add any necessary CSS or external stylesheets -->
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <style>
+        .carousel {
+            position: relative;
+            width: 100%;
+            height: 450px; /* Adjust height as needed */
+            overflow: hidden; /* Hide the overflow to prevent scrollbars */
+        }
+    
+        .main-content {
+            display: none; /* Hide all slides initially */
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            transition: opacity 1s ease-in-out; /* Smooth transition for slide change */
+            opacity: 0; /* Initially hidden */
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+    
+        .main-content.active-slider {
+            display: flex; /* Show the active slide */
+            opacity: 1; /* Fully visible */
+        }
+
+        .main-content.active-slider img {
+            max-width: 100%;
+            height: auto;
+        }
+    
+        .text-content {
+            flex: 1;
+            padding: 20px;
+            text-align: left; /* Align text content to the right */
+        }
+    
+        .image-content {
+            flex: 1;
+            padding: 20px;
+            text-align: left; /* Align image content to the left */
+        }
+    
+        .image-content img {
+            max-width: 100%;
+            height: auto;
+        }
+    </style>
+    
 </head>
 <body>
     <header>
@@ -66,5 +116,33 @@
             <p>&copy; {% now "Y" %} Health Nexus. All rights reserved.</p>
         </div>
     </footer>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <!-- Add the slider JavaScript code -->
+    <script>
+        $(document).ready(function(){
+            // Function to switch to the next slider
+            function nextSlide() {
+                var $activeSlider = $('.active-slider');
+                var $nextSlider = $activeSlider.next('.main-content');
+                if ($nextSlider.length === 0) {
+                    $nextSlider = $('.main-content:first');
+                }
+                $activeSlider.removeClass('active-slider');
+                $nextSlider.addClass('active-slider');
+            }
+
+            // Set the interval for automatic sliding
+            var sliderInterval = setInterval(nextSlide, 7000); // 5000 milliseconds = 5 seconds
+
+            // Pause the sliding when hovering over any slider
+            $('.carousel').hover(function() {
+                clearInterval(sliderInterval); // Stop the interval
+            }, function() {
+                // Resume sliding when mouse leaves any slider
+                sliderInterval = setInterval(nextSlide, 7000);
+            });
+        });
+    </script>
 </body>
+
 </html>

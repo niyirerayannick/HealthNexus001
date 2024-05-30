@@ -112,20 +112,8 @@ main {
     border: 1px solid #0016a4ef;
 }
 
-.image-content img {
-    width: 550px; /* Set the desired width */
-    height: auto; /* Automatically adjust the height to maintain aspect ratio */
-    float: right; /* Align the image to the right */
-    margin-left: 20px; /* Add some space between the image and text */
-}
-
-
 /* Additional CSS for the container */
-.image-content {
-    display: flex; /* Use flexbox for layout */
-    justify-content: center; /* Center the image horizontally */
-    align-items: center; /* Center the image vertically */
-}
+
 
 .quiz-cards {
     display: flex;
@@ -362,6 +350,7 @@ text-decoration: none;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
+
 .question {
     margin-bottom: 20px;
 }
@@ -466,3 +455,4 @@ button[type="submit"]:hover {
         width: 100%;
     }
 }
+

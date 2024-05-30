@@ -68,6 +68,12 @@ def view_course(request, pk):
     course = get_object_or_404(Course, pk=pk)
     return render(request, 'course/view_course.html', {'course': course})
 
+@login_required
+def take_course(request, course_id):
+    user = request.user
+    course = get_object_or_404(Course, id=course_id)
+    CourseTaken.objects.get_or_create(user=user, course=course)
+    return redirect('view_course', pk=course_id)
 
 def register(request):
     if request.method == 'POST':
@@ -196,24 +202,57 @@ def logout_view(request):
     
 
 @login_required
-def dashboard(request):
+def Student_dashboard(request):
     user = request.user
+    total_courses_taken = CourseTaken.objects.filter(user=user).count()
+    total_quizzes_taken = QuizResult.objects.filter(user=user).count()
+    latest_quiz_result = QuizResult.objects.filter(user=user).order_by('-date_taken').first()
     quiz_results = QuizResult.objects.filter(user=user)
     courses_taken = CourseTaken.objects.filter(user=user)
-
-    if request.method == 'POST':
-        form = FeedbackForm(request.POST)
-        if form.is_valid():
-            feedback = form.save(commit=False)
-            feedback.user = user
-            feedback.save()
-            return redirect('my_dashboard')
-    else:
-        form = FeedbackForm()
 
     context = {
         'quiz_results': quiz_results,
         'courses_taken': courses_taken,
-        'form': form
+        'user':user,
+        'total_courses_taken': total_courses_taken,
+        'total_quizzes_taken': total_quizzes_taken,
+        'latest_quiz_result': latest_quiz_result,
     }
-    return render(request, 'student/dashboard.html', context)
+    return render(request, 'student/student_dashboard.html', context)
+
+@login_required
+def student_courses(request):
+    user = request.user
+    courses_taken = CourseTaken.objects.filter(user=user).select_related('course')
+
+    context = {
+        'courses': courses_taken,
+    }
+
+    return render(request, 'student/student_courses.html', context)
+
+
+
+@login_required
+def student_taken_quiz(request):
+    user = request.user
+    quizzes_taken = QuizResult.objects.filter(user=user).select_related('quiz')
+
+    context = {
+        'quizzes': quizzes_taken,
+    }
+
+    return render(request, 'student/student_quiz.html', context)
+
+@login_required
+def check_marks_view(request, course_id):
+    user = request.user
+    course = get_object_or_404(Course, id=course_id)
+    quiz_results = QuizResult.objects.filter(user=user, quiz__course=course)
+
+    context = {
+        'course': course,
+        'quiz_results': quiz_results,
+    }
+
+    return render(request, 'student/student_results.html', context)

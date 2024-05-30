@@ -16,6 +16,8 @@
                         <h3>{{ course.name }}</h3>
                         <p>{{ course.description }}</p>
                         <a href="{% url 'view_course' course.pk %}">View Course</a>
+                        <a href="{% url 'take_course' course.id %}">Take Course</a>
+
                     </div></center>
                 </div>
                 {% endfor %}
