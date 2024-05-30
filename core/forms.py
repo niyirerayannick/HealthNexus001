@@ -1,6 +1,14 @@
 from django import forms
-from .models import Quiz, Question, Answer
-from .models import Feedback
+from .models import Quiz, Question, Answer, Feedback,Course, User
+
+class CourseForm(forms.ModelForm):
+    class Meta:
+        model = Course
+        fields = '__all__'
+
+    def __init__(self, *args, **kwargs):
+        super(CourseForm, self).__init__(*args, **kwargs)
+        self.fields['teacher'].queryset = User.objects.get_teachers()
 
 class FeedbackForm(forms.ModelForm):
     class Meta:

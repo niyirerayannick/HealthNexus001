@@ -11,13 +11,9 @@ class User(AbstractBaseUser, PermissionsMixin):
     telephone = models.IntegerField(blank=True, null=True,) 
     first_name = models.CharField(max_length=30, blank=True)
     last_name = models.CharField(max_length=30, blank=True)
-    date_of_birth = models.DateField(null=True, blank=True)
-    school = models.CharField(max_length=100, blank=True)
-    age = models.IntegerField( blank=True)
-    profile_image = models.ImageField(upload_to='profile_images/', blank=True, null=True)
     is_staff = models.BooleanField(default=False)
     is_active = models.BooleanField(default=True)
-    role = models.CharField(max_length=10, choices=ROLE_CHOICES)
+    role = models.CharField(max_length=10, choices=ROLE_CHOICES, default='Student')
 
 
     objects = CustomUserManager()

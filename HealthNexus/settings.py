@@ -26,7 +26,7 @@ SECRET_KEY = 'django-insecure-9k(ox*x-)!(@%r3miu$e85$rr=-(y14ubkb^e&=447+w8fzp7x
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['localhost', '127.0.0.1','healthnexus.pythonanywhere.com']
+ALLOWED_HOSTS = ['localhost', '127.0.0.1','healthnexus.bwenge.com']
 
 
 # Application definition
@@ -145,7 +145,7 @@ AUTH_USER_MODEL = 'core.User'
 LOGOUT_REDIRECT_URL = 'login'
 LOGIN_URL = 'login' 
 # settings.py
-BASE_URL = 'healthnexus.pythonanywhere.com' 
+BASE_URL = 'healthnexus.bwenge.com' 
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
 # For production, use SMTP backend

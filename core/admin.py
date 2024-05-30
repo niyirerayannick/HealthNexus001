@@ -1,6 +1,11 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 from .models import Course, Quiz, Question, Answer, User
+from .forms import CourseForm
+
+class CourseAdmin(admin.ModelAdmin):
+    form = CourseForm
+
 
 class AnswerInline(admin.TabularInline):
     model = Answer
@@ -28,7 +33,7 @@ class CustomUserAdmin(BaseUserAdmin):
     ordering = ('email',)
 
 
-admin.site.register(Course)
+admin.site.register(Course, CourseAdmin)
 admin.site.register(User, CustomUserAdmin)
 admin.site.register(Quiz, QuizAdmin)
 admin.site.register(Question)

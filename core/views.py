@@ -216,4 +216,4 @@ def dashboard(request):
         'courses_taken': courses_taken,
         'form': form
     }
-    return render(request, 'core/dashboard.html', context)
+    return render(request, 'student/dashboard.html', context)
