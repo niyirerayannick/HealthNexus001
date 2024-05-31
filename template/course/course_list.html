@@ -14,9 +14,9 @@
                     {% endif %}
                     <center><div class="card-content">
                         <h3>{{ course.name }}</h3>
-                        <p>{{ course.description }}</p>
+                        <p>{{ course.description |truncatewords:8 }}</p>
                         <a href="{% url 'view_course' course.pk %}">View Course</a>
-                        <a href="{% url 'take_course' course.id %}">Take Course</a>
+                        <a href="{% url 'take_course' course.id %}"style="background-color: green;">Take Course</a>
 
                     </div></center>
                 </div>

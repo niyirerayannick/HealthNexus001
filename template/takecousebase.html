@@ -1,0 +1,73 @@
+{% load static %} 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Health Nexus{% endblock %}</title>
+    <!-- Add any necessary CSS or external stylesheets -->
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <link href="{% static 'assets/fonts/feather/feather.css' %}" rel="stylesheet" />
+    <link href="{% static 'assets/libs/bootstrap-icons/font/bootstrap-icons.min.css' %}" rel="stylesheet" />
+
+    <!-- Theme CSS -->
+    <link rel="stylesheet" href="{% static 'assets/css/theme.min.css' %}">
+</head>
+<body>
+    <header>
+        <div class="cont-header">
+            <div class="logo">
+                <h1>Health<span>Nexus</span></h1>
+            </div>
+            <div class="menu-toggle"><i class="fas fa-bars"></i></div>
+            <nav>
+                <ul>
+                    <li><a href="/">Home</a></li>
+                    <li><a href="{% url 'course_list' %}">Courses</a></li>
+                    <li><a href="{% url 'quiz_list' %}">Quizzes</a></li>
+                    <li><a href="#">How it works?</a></li>
+                    <li><a href="#">About us</a></li>
+                    <li><a href="#">Features</a></li>
+                </ul>
+            </nav>
+            {% if user.is_authenticated %}
+    <div class="profile">
+        <div class="dropdown">
+            {% if user.profile.image %}
+           <img src="{{ user.profile.image.url }}" alt="Profile Picture" class="dropbtn"> 
+        {% else %}
+           <img src="{% static 'images/profile.jpg' %}" alt="Default Profile Picture">
+        {% endif %}
+            <div class="dropdown-content">
+                <a href="{% url 'my_dashboard' %}">My Dashboard</a>
+                <a href="#">My Profile</a>
+                <a href="{% url 'logout' %}">Logout</a>
+            </div>
+        </div>
+    </div>
+{% else %}
+    <div class="profile">
+        <a href="{% url 'login' %}" class="join-now">JOIN NOW</a>
+    </div>
+{% endif %}
+
+        </div>
+    </header>
+    
+    <main>
+        
+        {% block content %}
+        
+        {% endblock %}
+    </main>
+
+    <script src="{% static 'assets/libs/@popperjs/core/dist/umd/popper.min.js' %}"></script>
+    <script src="{% static 'assets/libs/bootstrap/dist/js/bootstrap.min.js' %}"></script>
+    <script src="{% static 'assets/libs/simplebar/dist/simplebar.min.js' %}"></script>
+
+    <!-- Theme JS -->
+    <script src="{% static 'assets/js/theme.min.js' %}"></script>
+    
+</body>
+
+</html>

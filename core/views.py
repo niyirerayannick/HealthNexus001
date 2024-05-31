@@ -66,7 +66,7 @@ def course_list(request):
 
 def view_course(request, pk):
     course = get_object_or_404(Course, pk=pk)
-    return render(request, 'course/view_course.html', {'course': course})
+    return render(request, 'course/take_course.html', {'course': course})
 
 @login_required
 def take_course(request, course_id):
