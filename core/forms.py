@@ -18,11 +18,12 @@ class FeedbackForm(forms.ModelForm):
 
 class QuestionForm(forms.ModelForm):
     class Meta:
-        model = Answer
+        model = Question  # Use the Question model here
         fields = ['text']
         widgets = {
             'text': forms.TextInput(attrs={'class': 'form-control'})
         }
+
 
 class QuizForm(forms.Form):
     def __init__(self, *args, **kwargs):

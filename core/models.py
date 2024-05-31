@@ -8,7 +8,7 @@ class User(AbstractBaseUser, PermissionsMixin):
         ('student', 'Student'),
     )
     email = models.EmailField(unique=True)
-    telephone = models.IntegerField(blank=True, null=True,) 
+    telephone = models.CharField(max_length=15,default=000000000000) 
     first_name = models.CharField(max_length=30, blank=True)
     last_name = models.CharField(max_length=30, blank=True)
     is_staff = models.BooleanField(default=False)
@@ -77,7 +77,7 @@ class Question(models.Model):
 class Answer(models.Model):
     question = models.ForeignKey(Question, related_name='answers', on_delete=models.CASCADE)
     text = models.CharField(max_length=200)
-    is_correct = models.BooleanField(default=False)
+    is_correct = models.BooleanField(default=False)  # ForeignKey to Quiz
 
     def __str__(self):
         return self.text

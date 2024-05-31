@@ -1,25 +1,38 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
-from .models import Course, Quiz, Question, Answer, User
 from .forms import CourseForm
+from .models import Course, Quiz, Question, Answer, User, UserProfile
 
 class CourseAdmin(admin.ModelAdmin):
     form = CourseForm
 
-
 class AnswerInline(admin.TabularInline):
     model = Answer
+    extra = 3  # Adjust this as per your requirement
 
-class QuestionInline(admin.TabularInline):  # Use TabularInline instead of ModelAdmin
+class QuestionInline(admin.TabularInline):
     model = Question
+    inlines = [AnswerInline]
+    extra = 1
+
+class QuizQuestionAnswerInline(admin.TabularInline):
+    model = Question
+    fields = ['text']
+    extra = 1
 
 class QuizAdmin(admin.ModelAdmin):
-    inlines = [QuestionInline]
+    inlines = [QuizQuestionAnswerInline]
+
+
+class UserProfileInline(admin.StackedInline):
+    model = UserProfile
+    can_delete = False
 
 class CustomUserAdmin(BaseUserAdmin):
+    inlines = (UserProfileInline,)
     fieldsets = (
-        (None, {'fields': ('email', 'password')}),
-        ('Personal info', {'fields': ('first_name', 'last_name', 'date_of_birth', 'school', 'age', 'profile_image')}),
+        (None, {'fields': ('email', 'password', 'role')}),
+        ('Personal info', {'fields': ('first_name', 'last_name')}),
         ('Permissions', {'fields': ('is_active', 'is_staff', 'is_superuser', 'groups', 'user_permissions')}),
     )
     add_fieldsets = (
@@ -32,9 +45,7 @@ class CustomUserAdmin(BaseUserAdmin):
     search_fields = ('email', 'first_name', 'last_name')
     ordering = ('email',)
 
-
 admin.site.register(Course, CourseAdmin)
 admin.site.register(User, CustomUserAdmin)
 admin.site.register(Quiz, QuizAdmin)
-admin.site.register(Question)
 admin.site.register(Answer)

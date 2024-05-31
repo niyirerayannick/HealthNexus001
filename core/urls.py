@@ -24,9 +24,16 @@ urlpatterns = [
     path('forget-password/', views.forget_password, name='forget_password'),
     path('reset-password/<uidb64>/<token>/', views.reset_password, name='reset_password'),
     
-    #dashboard
+    #dashboard student
     path('student/dashboard/', views.Student_dashboard, name='my_dashboard'),
     path('student/courses/', views.student_courses, name='student_courses'),
     path('student/quizzes/', views.student_taken_quiz, name='student_quizzes'),
     path('student/check-marks/<int:quiz_id>/', views.check_marks_view, name='check_marks'),
-    ]
+    #dashboard student
+    #dashboard teacher
+    path('teacher/dashboard/', views.teacher_dashboard, name='teacher_dashboard'),
+    path('teacher/courses/', views.teacher_courses, name='teacher_courses'),
+    path('teacher/courses/<int:course_id>/', views.teacher_course_detail, name='teacher_course_detail'),
+    path('teacher/quizzes/', views.teacher_quizzes, name='teacher_quizzes'),
+    path('teacher/quizzes/<int:quiz_id>/', views.teacher_quiz_detail, name='teacher_quiz_detail'),
+]

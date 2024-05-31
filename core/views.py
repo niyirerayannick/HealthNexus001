@@ -256,3 +256,72 @@ def check_marks_view(request, course_id):
     }
 
     return render(request, 'student/student_results.html', context)
+
+
+from django.contrib.auth.decorators import login_required
+from django.shortcuts import render, get_object_or_404
+from .models import Course, Quiz, QuizResult, User, CourseTaken
+
+@login_required
+def teacher_dashboard(request):
+    user = request.user
+    courses_taught = Course.objects.filter(teacher=user)
+    total_courses_taught = courses_taught.count()
+    quizzes_taught = Quiz.objects.filter(course__teacher=user)
+    total_quiz = quizzes_taught.count()
+    total_students = User.objects.filter(coursetaken__course__in=courses_taught).distinct().count()
+    latest_quiz_results = QuizResult.objects.filter(quiz__course__in=courses_taught).order_by('-date_taken')[:5]
+
+    context = {
+        'total_quiz':total_quiz,
+        'quizzes_taught': quizzes_taught,
+        'courses_taught': courses_taught,
+        'total_courses_taught': total_courses_taught,
+        'total_students': total_students,
+        'latest_quiz_results': latest_quiz_results,
+    }
+    return render(request, 'teacher/teacher_dashboard.html', context)
+
+@login_required
+def teacher_courses(request):
+    user = request.user
+    courses_taught = Course.objects.filter(teacher=user)
+
+    context = {
+        'courses_taught': courses_taught,
+    }
+
+    return render(request, 'teacher/teacher_courses.html', context)
+
+@login_required
+def teacher_course_detail(request, course_id):
+    user = request.user
+    course = get_object_or_404(Course, id=course_id)
+
+    context = {
+        'course': course,
+    }
+
+    return render(request, 'teacher/teacher_course_detail.html', context)
+
+@login_required
+def teacher_quizzes(request):
+    user = request.user
+    quizzes_taught = Quiz.objects.filter(course__teacher=user)
+
+    context = {
+        'quizzes_taught': quizzes_taught,
+    }
+
+    return render(request, 'teacher/teacher_quizzes.html', context)
+
+@login_required
+def teacher_quiz_detail(request, quiz_id):
+    user = request.user
+    quiz = get_object_or_404(Quiz, id=quiz_id)
+
+    context = {
+        'quiz': quiz,
+    }
+
+    return render(request, 'teacher/teacher_quiz_detail.html', context)
