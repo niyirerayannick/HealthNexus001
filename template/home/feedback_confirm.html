@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Activate Your Account</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 50px auto;
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+        }
+
+        .content {
+            text-align: center;
+        }
+
+        h1 {
+            color: #333;
+        }
+
+        p {
+            color: #666;
+            margin-bottom: 15px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="content">
+            <h1>Thank You, {{ user.first_name }}!</h1>
+            <p>We appreciate you taking the time to provide us with your valuable feedback.</p>
+            <p>Your input helps us to improve and provide a better experience for everyone.</p>
+            <p>If you have any further suggestions or comments, feel free to reach out to us anytime.</p>
+            <p>Have a great day!</p>
+            <a href="{% url 'home' %}" class="button">Back to Home</a>
+        </div>
+    </div>
+</body>
+</html>

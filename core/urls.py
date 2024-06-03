@@ -6,7 +6,10 @@ urlpatterns = [
     path('', views.home, name='home'),
     path('how-it-work/', views.how_it_work, name='how-it-work'),
     path('about/', views.about, name='about-us'),
-    path('feedback',views.feedback, name='feedback'),
+    path('feedback/',views.feedback, name='feedback'),
+    path('feedback-confirm/',views.feed_confirm, name='feedback-confirm'),
+    path('terms-and-conditions/',views.terms, name='terms-and-conditions'),
+    path('privacy-policy/',views.privacy, name='privacy-policy'),
     #course
     path('courses/', views.course_list, name='course_list'),
     path('course/<int:pk>/', views.view_course, name='view_course'),

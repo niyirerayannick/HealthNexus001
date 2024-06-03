@@ -1,17 +1,35 @@
-
-{% extends 'base.html' %}
-{% block title %}Home - Health Nexus{% endblock %}
+{% extends 'auth-base.html' %}
+{% block title %}Feedback - Health Nexus{% endblock %}
 
 {% block content %}
 {% load static %}
-<div class="container">
-        <div class="main-content">
-            <div class="text-content">
-                <h2>Feeedback</h2>
-               
+<div class="feedback-form">
+    <div class="logo">
+        <h1>Health<span>Nexus</span></h1>
+    </div>
+    <h2>Feedback</h2>
+    <p>We value your feedback. Please let us know your thoughts and suggestions.</p>
+    {% if messages %}
+        <ul style="margin-top: 20px;">
+            {% for message in messages %}
+                <center><p style="padding: 10px; border-radius: 4px; margin-bottom: 10px; {% if message.tags == 'error' %} background-color: #f8d7da; color: #721c24; border: 1px solid #f5c6cb;{% endif %}">{{ message }}</p></center>
+            {% endfor %}
+        </ul>
+    {% endif %}
+    <form action="{% url 'feedback' %}" method="post">
+        {% csrf_token %}
+        <div class="input-group">
+            <div class="form-row">
+                <div class="input-item">
+                    <label for="feedback">Feedback</label>
+                    {{ form.feedback }}
+                </div>
             </div>
         </div>
-</div
-<br>
-
+        <button type="submit" class="feedback-btn">Submit Feedback</button>
+    </form>
+</div>&nbsp;&nbsp;&nbsp;
+<div class="illustration">
+    <img src="{% static 'images/feedback.png' %}" alt="Illustration">
+</div>
 {% endblock %}

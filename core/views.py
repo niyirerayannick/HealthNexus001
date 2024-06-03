@@ -37,8 +37,27 @@ def how_it_work(request):
 def about(request):
     return render(request, 'admin/about.html')
 
+def feed_confirm(request):
+    return render(request, 'home/feedback_confirm.html')
+
+@login_required
 def feedback(request):
-    return render(request, 'home/feedback.html')
+    if request.method == 'POST':
+        form = FeedbackForm(request.POST)
+        if form.is_valid():
+            feedback = form.save(commit=False)
+            feedback.user = request.user
+            feedback.save()
+            return redirect('feedback-confirm')
+    else:
+        form = FeedbackForm()
+    return render(request, 'home/feedback.html', {'form': form})
+
+def terms(request):
+    return render(request, 'home/terms.html')
+
+def privacy(request):
+    return render(request, 'home/policy.html')
 
 def quiz_list(request):
     quizzes = Quiz.objects.all()
