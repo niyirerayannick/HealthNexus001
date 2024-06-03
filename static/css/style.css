@@ -77,6 +77,11 @@ main {
     flex-wrap: wrap;
 }
 
+.image-content {
+    flex: 1;
+    padding: 50px;
+}
+
 .text-content {
     max-width: 50%;
 }

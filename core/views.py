@@ -31,6 +31,15 @@ def home(request):
     context ={'quizzes': quizzes,'courses': courses}
     return render(request, 'home/home.html', context)
 
+def how_it_work(request):
+    return render(request, 'home/how_it_work.html')
+
+def About(request):
+    return render(request, 'home/about.html')
+
+def feedback(request):
+    return render(request, 'home/feedback.html')
+
 def quiz_list(request):
     quizzes = Quiz.objects.all()
     return render(request, 'quiz/quiz_list.html', {'quizzes': quizzes})
