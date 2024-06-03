@@ -34,8 +34,8 @@ def home(request):
 def how_it_work(request):
     return render(request, 'home/how_it_work.html')
 
-def About(request):
-    return render(request, 'home/About.html')
+def about(request):
+    return render(request, 'home/about.html')
 
 def feedback(request):
     return render(request, 'home/feedback.html')
