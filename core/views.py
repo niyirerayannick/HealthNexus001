@@ -200,8 +200,7 @@ def forget_password(request):
             return render(request, 'admin/password_reset_response.html', {'message': "No user found with this email."})
     else:
         return render(request, 'admin/forget_password.html')
-    
-    
+
 def reset_password(request, uidb64, token):
     try:
         uid = force_str(urlsafe_base64_decode(uidb64))
@@ -219,7 +218,7 @@ def reset_password(request, uidb64, token):
         else:
             return render(request, 'admin/reset_password.html')
     else:
-        return HttpResponse('Invalid password reset link.')   
+        return HttpResponse('Invalid password reset link.')
 
 def logout_view(request):
     if request.method == 'POST' or request.method == 'GET':
